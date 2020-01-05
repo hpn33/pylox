@@ -1,11 +1,13 @@
 import util
 
 
-class scanner:
-
-	def __init__(self, lines = []):
+class Scanner:
+	
+	def __init__(self, fr):
+		self.length = 0
 		self.tokens = []
 		
+<<<<<<< Updated upstream
 		self.set_lines(fr)
 	
 	def set_lines(self, fr):
@@ -14,6 +16,31 @@ class scanner:
 		
 		
 		self.get_tokens(fr.lines)
+=======
+<<<<<<< Updated upstream
+		self.get_tokens(lines)
+	
+	def set_lines(self, lines = []):
+		self.get_tokens(lines)
+=======
+		self.start = 0
+		self.current = 0
+		self.line = 1
+		
+		self.set_lines(fr)
+	
+	def set_lines(self, fr):
+		
+		self.length = fr.length
+		self.tokens = []
+		
+		self.start = 0
+		self.current = 0
+		self.line = 1
+		
+		self.get_tokens(fr.lines)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	
 	def get_tokens(self, lines):
 		for line in lines:
@@ -90,10 +117,46 @@ class scanner:
 			counter += 1
 		
 		return {'counter': counter, 'string': string}
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 	
 	def check_mark(self, word):
 		return word in ['\'', '\"']
 	
+<<<<<<< Updated upstream
+=======
+	def scan_tokens(self):
+		while not self.is_at_end():
+			self.start = self.current
+			self.scan_token()
+		
+		self.tokens.append(util.Token(util.TokenType['EOF'], None, self.line))
+		return self.tokens
+	
+	def scan_token(self):
+		
+		character = advance()
+		
+		pass
+	
+	def add_token(self, typ):
+		self.tokens.append(util.Token(typ, None))
+	
+	def add_token(self, typ, literal):
+		text = self.source[self.start, self.current]
+		self.tokens.append(util.Token(typ, text, literal, self.line))
+	
+	def advance(self):
+		self.current += 1
+		return self.source[self.current - 1]
+	
+	def is_at_end(self):
+		return self.current >= len(self.length)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 
 class FileReader:
