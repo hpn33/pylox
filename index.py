@@ -1,11 +1,10 @@
-import util
 import scanner
 
-fr = scanner.file_reader('script.lox')
+fr = scanner.FileReader('script.lox')
 
-s = scanner.scanner(fr.lines)
+print(fr.lines)
+s = scanner.Scanner(fr)
 del fr
 
-print(fr)
-
-s.get_tokens()
+# for tok in s.tokens:
+# 	print(tok.type, ' ', tok.source)
