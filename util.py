@@ -1,19 +1,17 @@
-
-
 TYPE = [
-	
+
 ]
 
 
 
-class token:
+class Token:
 	
-	def __init__(self, source, type):
+	def __init__(self, source, typ):
 		self.source = source
-		self.type = type
-	
+		self.type = typ
 
-class line:
+
+class Line:
 	
 	def __init__(self, num, source):
 		self.num = num
@@ -23,7 +21,7 @@ class line:
 	def get_parts(self):
 		pass
 	
-	def level_detector(self, line):
+	def level_detector(self, line: str) -> int:
 		level = 0
 		
 		for w in line:
@@ -34,15 +32,12 @@ class line:
 		
 		return level
 	
-	def check_last_back_n(self, line):
-		position = len(line)-1
-	
+	def check_last_back_n(self, line: str) -> str:
+		position = len(line) - 1
+		
 		last_back_n = line[position:]
-			
+		
 		if last_back_n == '\n':
 			line = line[:position]
 		
 		return line
-
-
-
