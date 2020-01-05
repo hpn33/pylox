@@ -7,29 +7,13 @@ class Scanner:
 		self.length = 0
 		self.tokens = []
 		
-<<<<<<< Updated upstream
-		self.set_lines(fr)
-	
-	def set_lines(self, fr):
-		
-		self.tokens = []
-		
-		
-		self.get_tokens(fr.lines)
-=======
-<<<<<<< Updated upstream
-		self.get_tokens(lines)
-	
-	def set_lines(self, lines = []):
-		self.get_tokens(lines)
-=======
 		self.start = 0
 		self.current = 0
 		self.line = 1
 		
-		self.set_lines(fr)
+		self.init(fr)
 	
-	def set_lines(self, fr):
+	def init(self, fr):
 		
 		self.length = fr.length
 		self.tokens = []
@@ -39,12 +23,12 @@ class Scanner:
 		self.line = 1
 		
 		self.get_tokens(fr.lines)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	
 	def get_tokens(self, lines):
+		
 		for line in lines:
 			line = line.source
+			# print(line)
 			
 			self.set_tokens(line)
 		
@@ -53,7 +37,6 @@ class Scanner:
 	
 	def set_tokens(self, line):
 		text = ''
-		
 		counter = 0
 		
 		while counter <= len(line) - 1:
@@ -66,7 +49,7 @@ class Scanner:
 				continue
 			
 			text += w
-			# print(w, ' ', text)
+			# print(counter, ' ', w, ' ', text)
 			
 			if text in util.keyword:
 				tok = util.Token(text, 'keyword')
@@ -117,17 +100,10 @@ class Scanner:
 			counter += 1
 		
 		return {'counter': counter, 'string': string}
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
 	
 	def check_mark(self, word):
 		return word in ['\'', '\"']
 	
-<<<<<<< Updated upstream
-=======
 	def scan_tokens(self):
 		while not self.is_at_end():
 			self.start = self.current
@@ -138,12 +114,12 @@ class Scanner:
 	
 	def scan_token(self):
 		
-		character = advance()
+		character = self.advance()
 		
 		pass
 	
-	def add_token(self, typ):
-		self.tokens.append(util.Token(typ, None))
+	def add_tokens(self, typ):
+		self.add_token(util.Token(typ, None))
 	
 	def add_token(self, typ, literal):
 		text = self.source[self.start, self.current]
@@ -155,13 +131,12 @@ class Scanner:
 	
 	def is_at_end(self):
 		return self.current >= len(self.length)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 
 class FileReader:
 	
 	def __init__(self, path):
+		self.source = ''
 		self.lines = []
 		self.length = 0
 		
@@ -175,10 +150,12 @@ class FileReader:
 		f.close()
 	
 	def set_file(self, file):
-		self.length = len(file.read())
+		self.source = file.read()
+		self.length = len(self.source)
 		
 		count = 1
-		for line in file:
+		
+		for line in self.source.splitlines():
 			lin = util.Line(count, line)
 			self.lines.append(lin)
 			
