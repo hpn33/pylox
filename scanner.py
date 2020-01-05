@@ -1,4 +1,6 @@
+
 import util
+import grammer
 
 
 class scanner:
@@ -40,7 +42,7 @@ class scanner:
 			text += w
 			#print(w, ' ', text)
 			
-			if text in util.keyword:
+			if text in grammer.keyword:
 				tok = util.token(text, 'keyword')
 				self.tokens.append(tok)
 				text = ''
@@ -48,7 +50,7 @@ class scanner:
 			if text == ' ':
 				text = ''
 			
-			if text in util.assignment:
+			if text in grammer.assignment:
 				tok = util.token(text, 'assign')
 				self.tokens.append(tok)
 				text = ''

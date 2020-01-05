@@ -4,19 +4,6 @@ TYPE = [
 	
 ]
 
-keyword = [
-	'var',
-	'print',
-	'pass',
-	'class',	
-	'pass'	
-]
-
-assignment = [
-	'=', '==',
-	':',
-	
-]
 
 
 class token:
