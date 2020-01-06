@@ -1,7 +1,8 @@
-import scanner
+from scanner import Scanner
 
-fr = scanner.FileReader('script.lox')
+f = open('script.lox')
 
-s = scanner.Scanner(fr)
-del fr
+s = Scanner(f.read())
+s.scan_tokens()
 
+f.close()

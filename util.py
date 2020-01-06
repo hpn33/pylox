@@ -1,3 +1,4 @@
+
 TYPE = [
 
 ]
@@ -11,16 +12,10 @@ keyword = [
 ]
 
 assignment = [
-	'=', '==',
+	'=',
+	'==',
 	':',
 ]
-
-
-class Token:
-	
-	def __init__(self, source, typ):
-		self.source = source
-		self.type = typ
 
 
 class Line:
