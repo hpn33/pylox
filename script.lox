@@ -1,3 +1,7 @@
+// this is a comment
+(( )){} // grouping stuff
+!*+-/=<> <= == // operators
+
 print "hello world"
 print 'hello world'
 var = hello world
@@ -8,3 +12,5 @@ class hello :
 =
 >
 >=
+pedram / hello
+=teb

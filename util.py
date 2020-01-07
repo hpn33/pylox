@@ -1,23 +1,4 @@
 
-TYPE = [
-
-]
-
-keyword = [
-	'var',
-	'print',
-	'pass',
-	'class',
-	'pass'
-]
-
-assignment = [
-	'=',
-	'==',
-	':',
-]
-
-
 class Line:
 	
 	def __init__(self, num, source):
