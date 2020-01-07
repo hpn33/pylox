@@ -141,8 +141,14 @@ class Scanner:
 				self.add_token(TokenType.SLASH)
 		
 		else:
-			# Lox.error(line, 'Unexpected character')
-			print(self.line, ' Unexpected character')
+			if self.is_digit(char):
+				self.number_action()
+			else:
+				# Lox.error(line, 'Unexpected character')
+				print(self.line, ' Unexpected character')
+	
+	def is_digit(self, char: str) -> bool:
+		return '0' <= char <= '9'
 	
 	def peek(self):
 		if self.is_at_end():
@@ -150,26 +156,6 @@ class Scanner:
 		
 		# print(self.source[self.current])
 		return self.source[self.current]
-	
-	def string_action(self, string_symbol):
-		while self.peek() != string_symbol and not self.is_at_end():
-			if self.peek() == '\n':
-				self.line += 1
-			
-			self.advance()
-		
-		# Unterminated string.
-		if self.is_at_end():
-			# Lox.error(self.line, 'Unterminated string.')
-			print(self.line, ' Unterminated string.')
-		
-		# The closing ".
-		self.advance()
-		
-		# Trim the surrounding quotes
-		value = self.source[self.start + 1: self.current - 1]
-		# print(value)
-		self.add_token(TokenType.STRING, value)
 	
 	def next_match(self, expected: str):
 		if self.is_at_end():
@@ -193,11 +179,47 @@ class Scanner:
 		return self.source[self.current - 1]
 	
 	def is_at_end(self):
-		# isent = self.current >= len(self.source)
-		# print(isent)
-		
 		# print(self.current, ':', len(self.source))
 		return self.current >= len(self.source)
+	
+	def peek_next(self):
+		if self.current + 1 >= len(self.source):
+			return '\0'
+		
+		return self.source[self.current + 1]
+	
+	def number_action(self):
+		while self.is_digit(self.peek()):
+			self.advance()
+		
+		# Look for a fractional part.
+		if self.peek() == '.' and self.is_digit(self.peek_next()):
+			self.advance()
+			
+			while self.is_digit(self.peek()):
+				self.advance()
+		
+		self.add_token(TokenType.NUMBER, float(self.source[self.start: self.current]))
+	
+	def string_action(self, string_symbol):
+		while self.peek() != string_symbol and not self.is_at_end():
+			if self.peek() == '\n':
+				self.line += 1
+			
+			self.advance()
+		
+		# Unterminated string.
+		if self.is_at_end():
+			# Lox.error(self.line, 'Unterminated string.')
+			print(self.line, ' Unterminated string.')
+		
+		# The closing ".
+		self.advance()
+		
+		# Trim the surrounding quotes
+		value = self.source[self.start + 1: self.current - 1]
+		# print(value)
+		self.add_token(TokenType.STRING, value)
 
 
 class FileReader:
