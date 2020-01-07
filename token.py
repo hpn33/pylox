@@ -62,32 +62,47 @@ class TokenType(Enum):
 	EOF = auto()
 
 
-keyword = {
-	'print': TokenType.PRINT,
-	'var': TokenType.VAR
-}
-
-symbol = {
-	'(': TokenType.LEFT_PAREN,
-	')': TokenType.RIGHT_PAREN,
-	'{': TokenType.LEFT_BRACE,
-	'}': TokenType.RIGHT_BRACE,
-	',': TokenType.COMMA,
-	'.': TokenType.DOT,
-	'-': TokenType.MINUS,
-	'+': TokenType.PLUS,
-	';': TokenType.SEMICOLON,
-	'*': TokenType.STAR,
+class Hook:
+	keyword = {
+		'and': TokenType.AND,
+		'class': TokenType.CLASS,
+		'else': TokenType.ELSE,
+		'false': TokenType.FALSE,
+		'for': TokenType.FOR,
+		'fun': TokenType.FUN,
+		'if': TokenType.IF,
+		'nil': TokenType.NIL,
+		'or': TokenType.OR,
+		'print': TokenType.PRINT,
+		'return': TokenType.RETURN,
+		'super': TokenType.SUPER,
+		'this': TokenType.THIS,
+		'true': TokenType.TRUE,
+		'var': TokenType.VAR,
+		'while': TokenType.WHILE
+	}
 	
-	'!': TokenType.BANG,
-	'=': TokenType.EQUAL,
-	'<': TokenType.LESS,
-	'>': TokenType.GREATER,
-	'!=': TokenType.BANG_EQUAL,
-	'==': TokenType.EQUAL_EQUAL,
-	'<=': TokenType.LESS_EQUAL,
-	'>=': TokenType.GREATER_EQUAL
-}
-
-liner = [' ', '\r', '\t', '\n']
-string = ['"', "'"]
+	symbol = {
+		'(': TokenType.LEFT_PAREN,
+		')': TokenType.RIGHT_PAREN,
+		'{': TokenType.LEFT_BRACE,
+		'}': TokenType.RIGHT_BRACE,
+		',': TokenType.COMMA,
+		'.': TokenType.DOT,
+		'-': TokenType.MINUS,
+		'+': TokenType.PLUS,
+		';': TokenType.SEMICOLON,
+		'*': TokenType.STAR,
+		
+		'!': TokenType.BANG,
+		'=': TokenType.EQUAL,
+		'<': TokenType.LESS,
+		'>': TokenType.GREATER,
+		'!=': TokenType.BANG_EQUAL,
+		'==': TokenType.EQUAL_EQUAL,
+		'<=': TokenType.LESS_EQUAL,
+		'>=': TokenType.GREATER_EQUAL
+	}
+	
+	liner = [' ', '\r', '\t', '\n']
+	string = ['"', "'"]

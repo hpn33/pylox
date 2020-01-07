@@ -1,5 +1,6 @@
 import util
-from token import Token, TokenType, symbol, liner, string
+# from token import Token, TokenType, symbol, liner, string
+from token import Token, TokenType, Hook as hook
 
 
 class Scanner:
@@ -113,25 +114,29 @@ class Scanner:
 		
 		char = self.advance()
 		
-		if char in string:
+		if char in hook.string:
 			self.string_action(char)
 		
-		elif char in liner:
+		elif char == 'o':
+			if self.peek() == 'r':
+				self.add_token(TokenType.OR)
+		
+		elif char in hook.liner:
 			if char == '\n':
 				self.line += 1
 		
-		elif char in symbol and self.next_match('='):
+		elif char in hook.symbol and self.next_match('='):
 			# print('d symbol')
 			# c = f'{char}='
 			# print(c, ' ', symbol[c])
 			
-			self.add_token(symbol[f'{char}='])
+			self.add_token(hook.symbol[f'{char}='])
 		
-		elif char in symbol:
+		elif char in hook.symbol:
 			# print('symbol')
 			# print(char, ' ', symbol[char])
 			
-			self.add_token(symbol[char])
+			self.add_token(hook.symbol[char])
 		
 		elif char == '/':
 			if self.next_match('/'):
@@ -143,12 +148,20 @@ class Scanner:
 		else:
 			if self.is_digit(char):
 				self.number_action()
+			elif self.is_alpha(char):
+				self.identifier_action()
 			else:
 				# Lox.error(line, 'Unexpected character')
 				print(self.line, ' Unexpected character')
 	
+	def is_alpha(self, char: str) -> bool:
+		return ('a' <= char <= 'z') or ('A' <= char <= 'Z') or char == '_'
+	
 	def is_digit(self, char: str) -> bool:
 		return '0' <= char <= '9'
+	
+	def is_alpha_numeric(self, char: str) -> bool:
+		return self.is_alpha(char) or self.is_digit(char)
 	
 	def peek(self):
 		if self.is_at_end():
@@ -187,6 +200,18 @@ class Scanner:
 			return '\0'
 		
 		return self.source[self.current + 1]
+	
+	def identifier_action(self):
+		while self.is_alpha_numeric(self.peek()):
+			self.advance()
+		
+		text = self.source[self.start: self.current]
+		
+		typ = TokenType.IDENTIFIER
+		if text in hook.keyword:
+			typ = hook.keyword[text]
+		
+		self.add_token(typ)
 	
 	def number_action(self):
 		while self.is_digit(self.peek()):
