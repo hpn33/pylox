@@ -9,7 +9,7 @@ class Token(object):
 		self.line = line
 	
 	def __str__(self):
-		return f'{self.typ} {self.lexeme} {self.literal}'
+		return f'{self.typ} {self.lexeme} {self.literal} {self.line}'
 
 
 class TokenType(Enum):
@@ -25,6 +25,7 @@ class TokenType(Enum):
 	SEMICOLON = auto()
 	SLASH = auto()
 	STAR = auto()
+	COLON = auto()
 	
 	# one or two character tokens
 	BANG = auto()
@@ -92,6 +93,7 @@ class Hook:
 		'-': TokenType.MINUS,
 		'+': TokenType.PLUS,
 		';': TokenType.SEMICOLON,
+		':': TokenType.COLON,
 		'*': TokenType.STAR,
 		
 		'!': TokenType.BANG,

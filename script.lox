@@ -9,8 +9,9 @@ var = hello world
 class hello :
 	pass
 
-=
->
->=
+/*
 pedram / hello
 =teb
+*/
+
+print hello

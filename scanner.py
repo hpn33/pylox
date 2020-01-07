@@ -117,31 +117,24 @@ class Scanner:
 		if char in hook.string:
 			self.string_action(char)
 		
-		elif char == 'o':
-			if self.peek() == 'r':
-				self.add_token(TokenType.OR)
-		
 		elif char in hook.liner:
 			if char == '\n':
 				self.line += 1
 		
-		elif char in hook.symbol and self.next_match('='):
-			# print('d symbol')
-			# c = f'{char}='
-			# print(c, ' ', symbol[c])
-			
-			self.add_token(hook.symbol[f'{char}='])
-		
 		elif char in hook.symbol:
 			# print('symbol')
-			# print(char, ' ', symbol[char])
-			
-			self.add_token(hook.symbol[char])
+			# print(char, ' ', hook.symbol[char])
+			if self.next_match('='):
+				self.add_token(hook.symbol[f'{char}='])
+			else:
+				self.add_token(hook.symbol[char])
 		
 		elif char == '/':
 			if self.next_match('/'):
 				while self.peek() != '\n' and not self.is_at_end():
 					self.advance()
+			elif self.next_match('*'):
+				self.multi_line_comment_action()
 			else:
 				self.add_token(TokenType.SLASH)
 		
@@ -152,7 +145,7 @@ class Scanner:
 				self.identifier_action()
 			else:
 				# Lox.error(line, 'Unexpected character')
-				print(self.line, ' Unexpected character')
+				print(self.line, char, 'Unexpected character')
 	
 	def is_alpha(self, char: str) -> bool:
 		return ('a' <= char <= 'z') or ('A' <= char <= 'Z') or char == '_'
@@ -163,20 +156,25 @@ class Scanner:
 	def is_alpha_numeric(self, char: str) -> bool:
 		return self.is_alpha(char) or self.is_digit(char)
 	
-	def peek(self):
-		if self.is_at_end():
-			return '\0'
-		
-		# print(self.source[self.current])
-		return self.source[self.current]
-	
 	def next_match(self, expected: str):
 		if self.is_at_end():
 			return False
+		
+		# print(self.line, ' ', expected, ' ', self.source[self.current])
 		if self.source[self.current] != expected:
 			return False
 		
 		self.current += 1
+		return True
+	
+	def check_next_match(self, expected: str):
+		if self.is_at_end():
+			return False
+		
+		# print(self.line, ' ', expected, ' ', self.source[self.current])
+		if self.source[self.current] != expected:
+			return False
+		
 		return True
 	
 	# def current_char(self):
@@ -188,6 +186,7 @@ class Scanner:
 	
 	def advance(self):
 		self.current += 1
+		
 		# print(self.source[self.current - 1])
 		return self.source[self.current - 1]
 	
@@ -195,11 +194,46 @@ class Scanner:
 		# print(self.current, ':', len(self.source))
 		return self.current >= len(self.source)
 	
+	def current_check(self, char):
+		return self.source[self.current] == char
+	
+	def peek(self):
+		if self.is_at_end():
+			return '\0'
+		
+		# print(self.source[self.current])
+		return self.source[self.current]
+	
 	def peek_next(self):
 		if self.current + 1 >= len(self.source):
 			return '\0'
 		
 		return self.source[self.current + 1]
+	
+	def multi_line_comment_action(self):
+		while not self.is_at_end():
+			# print(self.peek())
+			if self.peek() == '*':
+				# print(self.peek_next())
+				# print(self.next_match('/'))
+				if self.peek_next() == '/':
+					self.advance()
+					break
+			
+			if self.peek() == '\n':
+				self.line += 1
+			
+			self.advance()
+		
+		self.advance()
+		
+		# print('...')
+		# print(self.source[self.start:self.current+1])
+		# print('...')
+		
+		self.start = self.current + 1
+	
+	# print(self.source[self.start:])
 	
 	def identifier_action(self):
 		while self.is_alpha_numeric(self.peek()):
@@ -236,7 +270,7 @@ class Scanner:
 		# Unterminated string.
 		if self.is_at_end():
 			# Lox.error(self.line, 'Unterminated string.')
-			print(self.line, ' Unterminated string.')
+			print(self.line, 'Unterminated string.')
 		
 		# The closing ".
 		self.advance()
@@ -246,32 +280,31 @@ class Scanner:
 		# print(value)
 		self.add_token(TokenType.STRING, value)
 
-
-class FileReader:
-	
-	def __init__(self, path):
-		self.source = ''
-		self.lines = []
-		self.length = 0
-		
-		self.set_file_name(path)
-	
-	def set_file_name(self, file_name):
-		f = open(file_name, 'r')
-		
-		self.set_file(f)
-		
-		f.close()
-	
-	def set_file(self, file):
-		self.source = file.read()
-		self.length = len(self.source)
-		
-		count = 1
-		
-		for line in self.source.splitlines():
-			lin = util.Line(count, line)
-			self.lines.append(lin)
-			
-			del lin
-			count += 1
+# class FileReader:
+#
+# 	def __init__(self, path):
+# 		self.source = ''
+# 		self.lines = []
+# 		self.length = 0
+#
+# 		self.set_file_name(path)
+#
+# 	def set_file_name(self, file_name):
+# 		f = open(file_name, 'r')
+#
+# 		self.set_file(f)
+#
+# 		f.close()
+#
+# 	def set_file(self, file):
+# 		self.source = file.read()
+# 		self.length = len(self.source)
+#
+# 		count = 1
+#
+# 		for line in self.source.splitlines():
+# 			lin = util.Line(count, line)
+# 			self.lines.append(lin)
+#
+# 			del lin
+# 			count += 1
