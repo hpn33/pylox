@@ -2,12 +2,13 @@ def define_ast(output_dir: str, base_name: str, types: []):
 	writer = open(output_dir, 'w+')
 	
 	writer.write(
-		f'from scanner import Scanner\n'
-		f'from token import Token\n'
-		f'\n'
-		f'\n'
-		f'class {base_name}:\n'
-		f'	pass\n'
+		f'''from scanner import Scanner
+from token import Token
+
+
+class {base_name}:
+	pass
+'''
 	)
 	
 	for typ_key in types:
@@ -19,8 +20,7 @@ def define_ast(output_dir: str, base_name: str, types: []):
 
 
 def define_type(writer, base_name: str, class_name: str, fields: []):
-	
-	store_temp = lambda key: f'		self.{key} = {key}\n'
+	store_temp = lambda key: f'\t\tself.{key} = {key}\n'
 	
 	# fields in constructor.
 	all_fields = ''
@@ -33,11 +33,11 @@ def define_type(writer, base_name: str, class_name: str, fields: []):
 		store_fields += store_temp(key)
 	
 	writer.write(
-		f'\n'
-		f'\n'
-		f'class {class_name}({base_name}):\n'
-		f'	def __init__(self{all_fields}):\n'
-		f'{store_fields}'
+		f'''
+
+class {class_name}({base_name}):
+	def __init__(self{all_fields}):
+{store_fields}'''
 	)
 
 
