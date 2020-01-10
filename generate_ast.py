@@ -1,16 +1,17 @@
-def define_ast(output_dir: str, base_name: str, types: []):
-	writer = open(output_dir, 'w+')
-	
-	writer.write(
-		f'''from scanner import Scanner
+import os
+
+output_dir = lambda file_name: f'grammar/{file_name}.py'
+
+
+def define_ast(writer, base_name: str, types: []):
+	writer.write(f'''from scanner import Scanner
 from token import Token
 
 
 class {base_name}:
 	def accept(self, visitor):
 		pass
-'''
-	)
+''')
 	
 	for typ_key in types:
 		class_name = typ_key
@@ -65,4 +66,16 @@ base_desc = {
 }
 
 if __name__ == '__main__':
-	define_ast('grammar.py', 'Expr', base_desc)
+	
+	path = 'grammar'
+	name = 'Expr'
+	
+	if not os.path.isdir(path):
+		os.mkdir(path)
+	
+	if not os.path.isfile(f'{name}.py'):
+		os.mkdir(path + f'{name}.py')
+	
+	f = open(output_dir(name), 'w+')
+	
+	define_ast(f, name, base_desc)
