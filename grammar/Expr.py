@@ -2,9 +2,24 @@ from scanner import Scanner
 from token import Token
 
 
+class ExprVisitor:
+
+	def visit_binary_expr(self, expr):
+		raise NotImplementedError
+
+	def visit_grouping_expr(self, expr):
+		raise NotImplementedError
+
+	def visit_literal_expr(self, expr):
+		raise NotImplementedError
+
+	def visit_unary_expr(self, expr):
+		raise NotImplementedError
+
+
 class Expr:
-	def accept(self, visitor):
-		pass
+	def accept(self, visitor: ExprVisitor):
+		raise NotImplementedError
 
 
 class Binary(Expr):
@@ -13,24 +28,24 @@ class Binary(Expr):
 		self.operator = operator
 		self.right = right
 
-	def accept(self, visitor):
-		visitor.visitBinaryExpr(self)
+	def accept(self, visitor: ExprVisitor):
+		return visitor.visit_binary_expr(self)
 
 
 class Grouping(Expr):
 	def __init__(self, expression: Expr):
 		self.expression = expression
 
-	def accept(self, visitor):
-		visitor.visitGroupingExpr(self)
+	def accept(self, visitor: ExprVisitor):
+		return visitor.visit_grouping_expr(self)
 
 
 class Literal(Expr):
 	def __init__(self, value: object):
 		self.value = value
 
-	def accept(self, visitor):
-		visitor.visitLiteralExpr(self)
+	def accept(self, visitor: ExprVisitor):
+		return visitor.visit_literal_expr(self)
 
 
 class Unary(Expr):
@@ -38,5 +53,5 @@ class Unary(Expr):
 		self.operator = operator
 		self.right = right
 
-	def accept(self, visitor):
-		visitor.visitUnaryExpr(self)
+	def accept(self, visitor: ExprVisitor):
+		return visitor.visit_unary_expr(self)
