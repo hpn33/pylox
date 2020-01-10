@@ -7,7 +7,8 @@ from token import Token
 
 
 class {base_name}:
-	pass
+	def accept(self, visitor):
+		pass
 '''
 	)
 	
@@ -38,6 +39,17 @@ def define_type(writer, base_name: str, class_name: str, fields: []):
 class {class_name}({base_name}):
 	def __init__(self{all_fields}):
 {store_fields}'''
+	)
+	
+	define_visitor(writer, base_name, class_name)
+
+
+def define_visitor(writer, base_name: str, class_name: str):
+	writer.write(
+		f'''
+	def accept(self, visitor):
+		visitor.visit{class_name + base_name}(self)
+'''
 	)
 
 
