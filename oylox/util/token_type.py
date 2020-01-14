@@ -1,17 +1,6 @@
 from enum import Enum, auto
 
 
-class Token(object):
-	def __init__(self, typ, lexeme, literal, line):
-		self.typ = typ
-		self.lexeme = lexeme
-		self.literal = literal
-		self.line = line
-	
-	def __str__(self):
-		return f'{self.typ} {self.lexeme} {self.literal} {self.line}'
-
-
 class TokenType(Enum):
 	# single character tokens
 	LEFT_PAREN = auto()
@@ -105,6 +94,14 @@ class Hook:
 		'<=': TokenType.LESS_EQUAL,
 		'>=': TokenType.GREATER_EQUAL
 	}
+	
+	statement = [
+		TokenType.CLASS, TokenType.FUN,
+		TokenType.VAR, TokenType.VAR,
+		TokenType.FOR, TokenType.IF,
+		TokenType.WHILE, TokenType.PRINT,
+		TokenType.RETURN
+	]
 	
 	liner = [' ', '\r', '\t', '\n']
 	string = ['"', "'"]

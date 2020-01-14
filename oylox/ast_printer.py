@@ -1,8 +1,9 @@
-from grammar.Expr import *
-from token import TokenType, Token
+from oylox.grammar.Expr import *
+from oylox.util.token import Token
+from oylox.util.token_type import TokenType
 
 
-class AstPrinter:
+class AstPrinter(ExprVisitor):
 	
 	def print(self, expr: Expr) -> str:
 		return expr.accept(self)

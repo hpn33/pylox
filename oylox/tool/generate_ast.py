@@ -79,7 +79,7 @@ base_desc = {
 
 if __name__ == '__main__':
 	
-	path = 'grammar'
+	path = '../grammar'
 	file_name = 'Expr'
 	
 	if not os.path.isdir(path):

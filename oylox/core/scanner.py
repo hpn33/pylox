@@ -1,12 +1,12 @@
-import util
-# from token import Token, TokenType, symbol, liner, string
-from token import Token, TokenType, Hook as hook
+from oylox.util.token import Token
+from oylox.util.token_type import TokenType, Hook
 
 
 class Scanner:
 	
-	def __init__(self, source: str):
+	def __init__(self, source: str, error_handler):
 		self.source = source
+		self.error_handler = error_handler
 		self.tokens = []
 		
 		self.start = 0
@@ -114,20 +114,20 @@ class Scanner:
 		
 		char = self.advance()
 		
-		if char in hook.string:
+		if char in Hook.string:
 			self.string_action(char)
 		
-		elif char in hook.liner:
+		elif char in Hook.liner:
 			if char == '\n':
 				self.line += 1
 		
-		elif char in hook.symbol:
+		elif char in Hook.symbol:
 			# print('symbol')
 			# print(char, ' ', hook.symbol[char])
 			if self.next_match('='):
-				self.add_token(hook.symbol[f'{char}='])
+				self.add_token(Hook.symbol[f'{char}='])
 			else:
-				self.add_token(hook.symbol[char])
+				self.add_token(Hook.symbol[char])
 		
 		elif char == '/':
 			if self.next_match('/'):
@@ -242,8 +242,8 @@ class Scanner:
 		text = self.source[self.start: self.current]
 		
 		typ = TokenType.IDENTIFIER
-		if text in hook.keyword:
-			typ = hook.keyword[text]
+		if text in Hook.keyword:
+			typ = Hook.keyword[text]
 		
 		self.add_token(typ)
 	

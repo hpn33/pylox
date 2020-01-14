@@ -1,5 +1,4 @@
-from scanner import Scanner
-from token import Token
+from oylox.util.token import Token
 
 
 class ExprVisitor:
